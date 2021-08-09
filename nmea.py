@@ -18,7 +18,7 @@ def format_gprmc(dt):
 with serial.Serial('/dev/ttyUSB0', 9600) as ser:
         while True:
                 ser.rts = True
-                ser.write(format_gprmc(datetime.datetime.now().time()))
+                ser.write(format_gprmc(datetime.datetime.now()))
                 ser.rts = False
                 # Update every 10 minutes
                 time.sleep(60*60*10)
