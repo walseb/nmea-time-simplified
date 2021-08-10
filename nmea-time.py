@@ -17,10 +17,19 @@ def format_gprmc(dt):
                 checksum ^= ord(c)
         return ("$%s*%02X\n" % (str, checksum)).encode('ascii')
 
-with serial.Serial('/dev/ttyUSB0', 9600) as ser:
-        while True:
-                ser.rts = True
-                ser.write(format_gprmc(datetime.datetime.now()))
-                ser.rts = False
-                # Update every 10 minutes
-                time.sleep(60*60*10)
+def update(ser):
+    ser.rts = True
+    ser.write(format_gprmc(datetime.datetime.now()))
+    ser.rts = False
+
+try:
+    with serial.Serial('/dev/ttyUSB0', 9600) as ser:
+        update(ser)
+except:
+  pass
+
+try:
+    with serial.Serial('/dev/ttyUSB1', 9600) as ser:
+        update(ser)
+except:
+  pass
